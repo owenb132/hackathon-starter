@@ -1,0 +1,10 @@
+html, body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0 auto !important;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+}
