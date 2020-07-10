@@ -3,7 +3,6 @@ import express, { Request, Response } from "express"
 import {
   addTodo,
   completeTodo,
-  getTodoByID,
   getTodos,
   uncompleteTodo,
 } from "../services/todo"

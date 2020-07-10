@@ -125,7 +125,7 @@ const TodoPage = (): JSX.Element => {
                   <ClearIcon />
                 </IconButton>
                 <span>{todo.label}</span>
-              </div>      
+              </div>
             ))}
           </>
         )}
