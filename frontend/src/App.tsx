@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar"
 import routes from "./routes"
 import store from "./store"
 
+// Styles
 const useStyles = makeStyles({
   app: {
     flex: 1,
@@ -15,7 +16,9 @@ const useStyles = makeStyles({
   }
 })
 
-function App() {
+// App component
+// this component renders the entire app inside the Provider and Router
+const App = (): JSX.Element => {
   const classes = useStyles()
   return (
     <Provider store={store}>

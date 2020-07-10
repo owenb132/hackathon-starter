@@ -14,6 +14,7 @@ import {
   uncompleteTodo,
 } from "../store/todo"
 
+// Styles
 const useStyles = makeStyles({
   root: {
     display: "flex",
@@ -47,22 +48,32 @@ const useStyles = makeStyles({
   },
 })
 
+// TodoPage component
 const TodoPage = (): JSX.Element => {
   const dispatch = useDispatch()
 
+  // complete and incomplete todos
+  // these are fetched from redux
   const completeTodos = useSelector(selectCompleteTodos)
   const incompleteTodos = useSelector(selectIncompleteTodos)
   
+  // useEffect is called when this component first renders and will fetch the to-do items from the database
   useEffect(() => {
     dispatch(fetchTodos())
   }, [])
   
+  /**
+   * make a request to add a todo item
+   */
   const addTodo = (): void => {
     dispatch(createTodo({
       label: `Todo ${[...completeTodos, ...incompleteTodos].length}`,
     }))
   }
 
+  /**
+   * make a request to mark a to-do item as complete
+   */
   const checkTodo = (todo: TodoItem): void => {
     if (!todo._id) {
       return
@@ -70,6 +81,9 @@ const TodoPage = (): JSX.Element => {
     dispatch(completeTodo(todo._id))
   }
 
+  /**
+   * make a request to mark a to-do item as incomplete
+   */
   const uncheckTodo = (todo: TodoItem): void => {
     if (!todo._id) {
       return

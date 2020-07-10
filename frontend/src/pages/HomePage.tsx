@@ -1,8 +1,8 @@
 import React from "react"
 import { makeStyles, Typography } from "@material-ui/core"
-
 import home from "../assets/home.svg"
 
+// Styles
 const useStyles = makeStyles({
   root: {
     flex: 1,
@@ -13,6 +13,7 @@ const useStyles = makeStyles({
   },
 })
 
+// HomePage coponent
 const HomePage = (): JSX.Element => {
   const classes = useStyles()
   return (
