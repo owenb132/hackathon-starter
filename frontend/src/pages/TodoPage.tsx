@@ -1,10 +1,18 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { Button, IconButton, makeStyles, Typography } from "@material-ui/core"
 import CheckIcon from "@material-ui/icons/Check"
+import ClearIcon from "@material-ui/icons/Clear"
 
 import { TodoItem } from "../models/todo"
-import { completeTodo, createTodo, selectCompleteTodos, selectIncompleteTodos } from "../store/todo"
+import {
+  completeTodo,
+  createTodo,
+  fetchTodos,
+  selectCompleteTodos,
+  selectIncompleteTodos,
+  uncompleteTodo,
+} from "../store/todo"
 
 const useStyles = makeStyles({
   root: {
@@ -45,17 +53,28 @@ const TodoPage = (): JSX.Element => {
   const completeTodos = useSelector(selectCompleteTodos)
   const incompleteTodos = useSelector(selectIncompleteTodos)
   
+  useEffect(() => {
+    dispatch(fetchTodos())
+  }, [])
+  
   const addTodo = (): void => {
-    const guid = `${[...completeTodos, ...incompleteTodos].length}`
     dispatch(createTodo({
-      guid,
-      label: `Todo ${guid}`,
-      complete: false,
+      label: `Todo ${[...completeTodos, ...incompleteTodos].length}`,
     }))
   }
 
   const checkTodo = (todo: TodoItem): void => {
-    dispatch(completeTodo(todo.guid))
+    if (!todo._id) {
+      return
+    }
+    dispatch(completeTodo(todo._id))
+  }
+
+  const uncheckTodo = (todo: TodoItem): void => {
+    if (!todo._id) {
+      return
+    }
+    dispatch(uncompleteTodo(todo._id))
   }
 
   const classes = useStyles()
@@ -87,7 +106,12 @@ const TodoPage = (): JSX.Element => {
               <Typography component="h6" variant="h4">Completed Items</Typography>
             </div>
             {completeTodos.map(todo => (
-              <p className={classes.completedTodo}>{todo.label}</p>
+              <div key={todo._id} className={classes.todoItem}>
+                <IconButton color="inherit" onClick={() => uncheckTodo(todo)}>
+                  <ClearIcon />
+                </IconButton>
+                <span>{todo.label}</span>
+              </div>      
             ))}
           </>
         )}

@@ -14,6 +14,6 @@ const useMongoDB = async (): Promise<MongoClient> => {
 
 export const useCollection = async <T>(collectionName: string): Promise<Collection<T>> => {
   const client = await useMongoDB()
-  const db = await client.db("hackathonstarter")
+  const db = await client.db("hackathon-starter")
   return await db.collection<T>(collectionName)
 }

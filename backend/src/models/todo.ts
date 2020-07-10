@@ -1,5 +1,5 @@
 export interface TodoItem {
-  guid: string
+  _id: string
   label: string
   description?: string
   complete: boolean
