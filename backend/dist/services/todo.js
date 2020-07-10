@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uncompleteTodo = exports.completeTodo = exports.addTodo = exports.getTodoByID = exports.getTodos = void 0;
+exports.completeTodo = exports.addTodo = exports.getTodoByID = exports.getTodos = void 0;
 const uuid_1 = require("uuid");
 const db_1 = require("./db");
 /**
@@ -49,19 +49,6 @@ exports.completeTodo = (_id) => __awaiter(void 0, void 0, void 0, function* () {
     });
     if (!result.ok) {
         throw new Error("Could not complete TodoItem");
-    }
-    return yield exports.getTodoByID(_id);
-});
-/**
- * mark a todo as incomplete
- */
-exports.uncompleteTodo = (_id) => __awaiter(void 0, void 0, void 0, function* () {
-    const todoCollection = yield db_1.useCollection("todo");
-    const { result } = yield todoCollection.updateOne({ _id }, {
-        $set: { complete: false },
-    });
-    if (!result.ok) {
-        throw new Error("Could not uncomplete TodoItem");
     }
     return yield exports.getTodoByID(_id);
 });

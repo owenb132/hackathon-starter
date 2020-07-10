@@ -55,14 +55,6 @@ export interface TodoCompleted {
   }
 }
 
-export interface TodoUncompletedStarted { type: "TODO_UNCOMPLETED_STARTED" }
-export interface TodoUncompleted {
-  type: "TODO_UNCOMPLETED"
-  payload: {
-    todo: TodoItem
-  }
-}
-
 // TodoAction type
 // this is a type which can refer to any of the action types defined above
 // this is useful for the reducer
@@ -74,8 +66,6 @@ export type TodoAction =
   | TodoCreatedStarted
   | TodoCompleted
   | TodoCompletedStarted
-  | TodoUncompleted
-  | TodoUncompletedStarted
 
 // Default state
 // when the app initializes, this will be the default redux state
@@ -120,21 +110,6 @@ const reducer = (state: TodoState = defaultState, action: TodoAction): TodoState
       return { ...state, isCompletingTodo: true }
     }
     case "TODO_COMPLETED": {
-      return {
-        ...state,
-        isCompletingTodo: false,
-        todos: state.todos.reduce((todos, nextTodo) => {
-          if (nextTodo._id === action.payload.todo._id) {
-            return [...todos, action.payload.todo]
-          }
-          return [...todos, nextTodo]
-        }, [] as TodoItem[]),
-      }
-    }
-    case "TODO_UNCOMPLETED_STARTED": {
-      return { ...state, isUncompletingTodo: true }
-    }
-    case "TODO_UNCOMPLETED": {
       return {
         ...state,
         isCompletingTodo: false,
@@ -196,22 +171,6 @@ export const completeTodo = (guid: string) => async (dispatch: Dispatch) => {
     dispatch({ type: "TODO_COMPLETED", payload: { todo: response.todo } })
   } else {
     dispatch({ type: "TODO_ERRORED", payload: { completeError: response?.error ?? "Error completing Todo item" } })
-  }
-}
-
-export const uncompleteTodo = (guid: string) => async (dispatch: Dispatch) => {
-  dispatch({ type: "TODO_UNCOMPLETED_STARTED" })
-  const response = await fetch(`${API_ENDPOINT}/todo/${guid}/uncomplete`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }).then(r => r.json())
-
-  if (!!response && !!response?.todo) {
-    dispatch({ type: "TODO_UNCOMPLETED", payload: { todo: response.todo } })
-  } else {
-    dispatch({ type: "TODO_ERRORED", payload: { uncompleteError: response?.error ?? "Error uncompleting Todo item" } })
   }
 }
 

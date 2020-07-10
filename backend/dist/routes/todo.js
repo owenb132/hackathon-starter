@@ -15,7 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.todoRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const todo_1 = require("../services/todo");
+// handles all requests made to the /todo route
 exports.todoRouter = express_1.default.Router();
+/**
+ * GET /
+ * fetch all to-do items in the database
+ */
 exports.todoRouter.get("/", (_, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const todos = yield todo_1.getTodos();
@@ -25,22 +30,12 @@ exports.todoRouter.get("/", (_, res) => __awaiter(void 0, void 0, void 0, functi
         return res.status(500).json({ error });
     }
 }));
-exports.todoRouter.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    try {
-        const todo = yield todo_1.getTodoByID(id);
-        if (!todo) {
-            return res.status(404).json({ error: "Item not found" });
-        }
-        return res.status(200).json({ todo });
-    }
-    catch (error) {
-        return res.status(500).json({ error });
-    }
-}));
+/**
+ * POST /
+ * create a new to-do item by providing a new label
+ */
 exports.todoRouter.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c;
-    console.log(JSON.stringify(req.body));
     // make sure they included a todo item
     if (!((_b = (_a = req.body) === null || _a === void 0 ? void 0 : _a.todo) === null || _b === void 0 ? void 0 : _b.label)) {
         return res.status(400).json({ error: "Invalid request body" });
@@ -53,23 +48,14 @@ exports.todoRouter.post("/", (req, res) => __awaiter(void 0, void 0, void 0, fun
         return res.status(500).json({ error });
     }
 }));
+/**
+ * POST /:id/complete
+ * mark an existing to-do item as complete
+ */
 exports.todoRouter.post("/:id/complete", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
         const todo = yield todo_1.completeTodo(id);
-        if (!todo) {
-            return res.status(404).json({ error: "Item not found" });
-        }
-        return res.status(200).json({ todo });
-    }
-    catch (error) {
-        return res.status(500).json({ error });
-    }
-}));
-exports.todoRouter.post("/:id/uncomplete", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    try {
-        const todo = yield todo_1.uncompleteTodo(id);
         if (!todo) {
             return res.status(404).json({ error: "Item not found" });
         }

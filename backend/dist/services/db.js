@@ -11,6 +11,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.useCollection = void 0;
 const mongodb_1 = require("mongodb");
+/**
+ * create a reference to the mongodb database
+ */
 const useMongoDB = () => __awaiter(void 0, void 0, void 0, function* () {
     return new Promise((resolve, reject) => {
         mongodb_1.MongoClient.connect("mongodb://localhost:27017", (err, client) => {
@@ -23,9 +26,12 @@ const useMongoDB = () => __awaiter(void 0, void 0, void 0, function* () {
         });
     });
 });
+/**
+ * create a connection to a specific collection in mongodb
+ */
 exports.useCollection = (collectionName) => __awaiter(void 0, void 0, void 0, function* () {
     const client = yield useMongoDB();
-    const db = yield client.db("hackathonstarter");
+    const db = yield client.db("hackathon-starter");
     return yield db.collection(collectionName);
 });
 //# sourceMappingURL=db.js.map

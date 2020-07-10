@@ -1,12 +1,5 @@
 import express, { Request, Response } from "express"
-
-import {
-  addTodo,
-  completeTodo,
-  getTodoByID,
-  getTodos,
-  uncompleteTodo,
-} from "../services/todo"
+import { addTodo, completeTodo, getTodos } from "../services/todo"
 
 // handles all requests made to the /todo route
 export const todoRouter = express.Router()
@@ -49,23 +42,6 @@ todoRouter.post("/:id/complete", async (req: Request, res: Response) => {
   const { id } = req.params
   try {
     const todo = await completeTodo(id)
-    if (!todo) {
-      return res.status(404).json({ error: "Item not found" })
-    }
-    return res.status(200).json({ todo })
-  } catch (error) {
-    return res.status(500).json({ error })
-  }
-})
-
-/**
- * POST /:id/uncomplete
- * mark an existing to-do item as incomplete
- */
-todoRouter.post("/:id/uncomplete", async (req: Request, res: Response) => {
-  const { id } = req.params
-  try {
-    const todo = await uncompleteTodo(id)
     if (!todo) {
       return res.status(404).json({ error: "Item not found" })
     }

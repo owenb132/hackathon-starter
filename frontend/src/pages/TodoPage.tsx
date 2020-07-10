@@ -2,7 +2,6 @@ import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { Button, IconButton, makeStyles, Typography } from "@material-ui/core"
 import CheckIcon from "@material-ui/icons/Check"
-import ClearIcon from "@material-ui/icons/Clear"
 
 import { TodoItem } from "../models/todo"
 import {
@@ -11,7 +10,6 @@ import {
   fetchTodos,
   selectCompleteTodos,
   selectIncompleteTodos,
-  uncompleteTodo,
 } from "../store/todo"
 
 // Styles
@@ -81,16 +79,6 @@ const TodoPage = (): JSX.Element => {
     dispatch(completeTodo(todo._id))
   }
 
-  /**
-   * make a request to mark a to-do item as incomplete
-   */
-  const uncheckTodo = (todo: TodoItem): void => {
-    if (!todo._id) {
-      return
-    }
-    dispatch(uncompleteTodo(todo._id))
-  }
-
   const classes = useStyles()
   return (
     <div className={classes.root}>
@@ -120,12 +108,7 @@ const TodoPage = (): JSX.Element => {
               <Typography component="h6" variant="h4">Completed Items</Typography>
             </div>
             {completeTodos.map(todo => (
-              <div key={todo._id} className={classes.todoItem}>
-                <IconButton color="inherit" onClick={() => uncheckTodo(todo)}>
-                  <ClearIcon />
-                </IconButton>
-                <span>{todo.label}</span>
-              </div>      
+              <p key={todo._id}>{todo.label}</p>
             ))}
           </>
         )}

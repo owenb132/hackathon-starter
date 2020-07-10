@@ -46,17 +46,3 @@ export const completeTodo = async (_id: string): Promise<TodoItem> => {
   }
   return await getTodoByID(_id)
 }
-
-/**
- * mark a todo as incomplete
- */
-export const uncompleteTodo = async (_id: string): Promise<TodoItem> => {
-  const todoCollection = await useCollection<TodoItem>("todo")
-  const { result } = await todoCollection.updateOne({ _id }, {
-    $set: { complete: false },
-  })
-  if (!result.ok) {
-    throw new Error("Could not uncomplete TodoItem")
-  }
-  return await getTodoByID(_id)
-}
